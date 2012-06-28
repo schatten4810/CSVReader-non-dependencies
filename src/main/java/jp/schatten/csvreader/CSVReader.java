@@ -1,4 +1,4 @@
-/**
+/*
  *
  */
 package jp.schatten.csvreader;
@@ -13,7 +13,7 @@ import java.util.List;
 
 
 /**
- *
+ * CSVファイルを読み込むクラス
  */
 public class CSVReader {
 	private String filePath;
@@ -21,6 +21,19 @@ public class CSVReader {
 	private boolean eof;
 	private Reader reader;
 	private String encoding = "UTF-8";
+	/**
+	 * 新規CSVReaderを作成する。
+	 * @param path ファイルパス
+	 * @param charset 文字コード
+	 */
+	public CSVReader(String path, String charset) {
+		this(path);
+		this.encoding = charset;
+	}
+	/**
+	 * 新規CSVReaderを作成する。
+	 * @param path ファイルパス
+	 */
 	public CSVReader(String path) {
 		filePath = path;
 		initialized = false;
@@ -32,6 +45,11 @@ public class CSVReader {
 		eof = false;
 		initialized = true;
 	}
+	/**
+	 * １レコード分を読み込む
+	 * @return １レコード分のデータ配列
+	 * @throws IOException ファイル読み込みに失敗した場合
+	 */
 	public String[] fetchrow() throws IOException {
 		if (!initialized) {
 			initialize();
@@ -111,9 +129,16 @@ public class CSVReader {
 		list.add(data.toString());
 		return list.toArray(new String[list.size()]);
 	}
+	/**
+	 * ファイルの終端に達しているかを判定する.
+	 * @return ファイルの終端に達していた場合に<code>true</code>.
+	 */
 	public boolean isEOF() {
 		return eof;
 	}
+	/**
+	 * ファイルを閉じる。
+	 */
 	public void close() {
 		try {
 			reader.close();
